@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Scopus-Modifier
-// @version      2.0
+// @version      2.1
 // @icon64       https://cdn.elsevier.io/verona/includes/favicons/favicon-96x96.png
 // @description  Modifies Scopus URLs to remove specific parameters and add functionality
 // @author       Leif Assistant
 // @match        https://www.scopus.com/authid/detail.uri?*
 // @match        https://www2.scopus.com/authid/detail.uri?*
-// @downloadURL  https://raw.githubusercontent.com/liqi0601/ScopusModifier/main/Scopus-Modifier-1.3.user.js
+// @downloadURL  https://raw.githubusercontent.com/atanllama/ScopusModifier-GoogleEnhance/main/Scopus-Modifier-1.3.user.js
 // ==/UserScript==
 
 (function () {
@@ -159,7 +159,9 @@
                     const fullName = data.preferredName.full;
                     const institution = data.latestAffiliatedInstitution?.name || '';
                     const [last, first] = fullName.split(', ');
-                    const query = `${first} ${last}, ${institution}`;
+                    const email = typeof data.emailAddress === 'string' ? data.emailAddress.trim() : '';
+                    const query = `${first} ${last}, ${institution}` +
+                        (email && email.toLowerCase() !== 'null' ? `, ${email}` : '');
                     const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
                     window.open(searchUrl, '_blank');
                 });
